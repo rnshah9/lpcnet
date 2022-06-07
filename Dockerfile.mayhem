@@ -1,13 +1,9 @@
 FROM --platform=linux/amd64 ubuntu:20.04
 
 RUN apt-get update
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y vim less man
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y automake pkg-config libtool
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y wget
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential automake pkg-config libtool wget
 
 ADD . /repo
 WORKDIR /repo
-RUN ./autogen.sh
-RUN ./configure
-RUN make -j8
+RUN ./autogen.sh && ./configure && make -j8 && chown 0:0 -R /repo
+ENV LD_LIBRARY_PATH=/repo/.libs

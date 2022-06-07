@@ -1,9 +1,5 @@
-project: rnshah9/lpcnet
-target: lpcnet
-image: ghcr.io/rnshah9/playground:lpcnet
+project: lpcnet
+target: lpcnet-demo
 
 cmds:
-  - cmd: /repo/lpcnet_demo -encode @@ out
-    # filepath: /test.c
-  # - cmd: /usr/bin/cat @@
-    # filepath: /test.c
+  - cmd: /repo/.libs/lpcnet_demo -encode @@ /dev/null
