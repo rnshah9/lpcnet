@@ -2,4 +2,4 @@ project: lpcnet
 target: lpcnet-demo
 
 cmds:
-  - cmd: /repo/.libs/lpcnet_demo -encode @@ /dev/null
+  - cmd: /lpcnet_demo -encode @@ /dev/null

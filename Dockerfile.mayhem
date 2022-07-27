@@ -3,16 +3,10 @@ FROM --platform=linux/amd64 ubuntu:20.04 as builder
 RUN apt-get update
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential automake pkg-config libtool wget
 
-ADD . /repo
+COPY . /repo
 WORKDIR /repo
-RUN ./autogen.sh && ./configure && make -j8 && chown 0:0 -R /repo
-ENV LD_LIBRARY_PATH=/repo/.libs
-
-RUN mkdir -p /deps
-RUN ldd /repo/.libs/lpcnet_demo | tr -s '[:blank:]' '\n' | grep '^/' | xargs -I % sh -c 'cp % /deps;'
+RUN ./autogen.sh && ./configure --prefix=/install && make -j8 && make install && chown 0:0 -R /repo
 
 FROM ubuntu:20.04 as package
-
-COPY --from=builder /deps /deps
-COPY --from=builder /repo/.libs/lpcnet_demo /repo/.libs/lpcnet_demo
-ENV LD_LIBRARY_PATH=/deps
+COPY --from=builder /install /install
+COPY --from=builder /repo/.libs/lpcnet_demo /
